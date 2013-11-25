@@ -31,16 +31,13 @@ def main():
 breakpoints = {9: True}
 stepping = False
 
-""" *** INSTRUCTIONS ***
+"""
+Our debug function
 Improve and expand this function to accept 
-a print command 'p <arg>'.
-If the print command has no argument,
-print out the dictionary that holds all variables.
-Print the value of the supplied variable
-in a form 'var = repr(value)', if
-the 'p' is followed by an argument,
-or print 'No such variable:', arg
-if no such variable exists.
+a breakpoint command 'b <line>'.
+Add the line number to the breakpoints dictionary
+or print 'You must supply a line number' 
+if 'b' is not followed by a line number.
 """
 def debug(command, my_locals):
     global stepping
@@ -58,14 +55,15 @@ def debug(command, my_locals):
         stepping = False
         return True
     elif command.startswith('p'):    # print
-        # YOUR CODE HERE
         if arg:
             if my_locals.__contains__(arg):
                 print arg, "=", repr(my_locals[arg])
             else:
                 print "No such variable:", arg
-        else: # print all
+        else:
             print my_locals
+    elif command.startswith('b'):    # breakpoint         
+        # YOUR CODE HERE
         
     elif command.startswith('q'):   # quit
         sys.exit(0)
