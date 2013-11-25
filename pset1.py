@@ -67,7 +67,7 @@ def debug(command, my_locals):
         if not arg:
             print "You must supply a line number"
         else:
-            breakpoints[arg] = True
+            breakpoints[int(arg)] = True
         
     elif command.startswith('q'):   # quit
         sys.exit(0)
@@ -76,7 +76,7 @@ def debug(command, my_locals):
         
     return False
 
-commands = ["p", "s", "p tag", "p foo", "q"] # p foo should fail
+commands = ["p", "s", "p tag", "p foo", "b 5", "c", "c", "q"]
 
 def input_command():
     #command = raw_input("(my-spyder) ")
@@ -97,6 +97,10 @@ def traceit(frame, event, trace_arg):
     return traceit
 
 # Using the tracer
-sys.settrace(traceit)
-main()
-sys.settrace(None)
+#sys.settrace(traceit)
+#main()
+#sys.settrace(None)
+
+print breakpoints
+debug("b 5", {'quote': False, 's': 'xyz', 'tag': False, 'c': 'b', 'out': ''})
+print breakpoints == {9: True, 5: True}
