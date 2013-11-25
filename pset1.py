@@ -107,13 +107,13 @@ def traceit(frame, event, trace_arg):
     return traceit
 
 # Using the tracer
-#sys.settrace(traceit)
-#main()
-#sys.settrace(None)
+sys.settrace(traceit)
+main()
+sys.settrace(None)
 
 #Simple test 
-print watchpoints
-debug("w s", {'s': 'xyz', 'tag': False})
-print watchpoints
+#print watchpoints
+#debug("w s", {'s': 'xyz', 'tag': False})
+#print watchpoints
 #>>> {'c': True}
 #>>> {'c': True, 's': True}
