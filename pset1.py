@@ -43,6 +43,7 @@ if 'w' is not followed by a string.
 def debug(command, my_locals):
     global stepping
     global breakpoints
+    global watchpoints
     
     if command.find(' ') > 0:
         arg = command.split(' ')[1]
@@ -70,7 +71,10 @@ def debug(command, my_locals):
             breakpoints[int(arg)] = True
     elif command.startswith('w'):
         #CODE HERE
-        pass
+        if not arg:
+            print "You must supply a variable name"
+        else:
+            watchpoints[arg] = True
         
     elif command.startswith('q'):   # quit
         print "Exiting my-spyder..."
