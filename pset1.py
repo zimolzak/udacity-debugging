@@ -62,8 +62,12 @@ def debug(command, my_locals):
                 print "No such variable:", arg
         else:
             print my_locals
-    elif command.startswith('b'):    # breakpoint         
+    elif command.startswith('b'):    # breakpoint
         # YOUR CODE HERE
+        if not arg:
+            print "You must supply a line number"
+        else:
+            breakpoints[arg] = True
         
     elif command.startswith('q'):   # quit
         sys.exit(0)
