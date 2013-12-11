@@ -91,7 +91,7 @@ def traceit(frame, event, arg):
 sys.settrace(traceit)
 # Tester. Increase the range for more precise results when running locally
 eps = 0.000001
-for i in range(1, 10):
+for i in range(1, 10000):
     r = int(random.random() * 1000) # An integer value between 0 and 999.99
     z = square_root(r, eps)
     z = square(z)
