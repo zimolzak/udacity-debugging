@@ -25,14 +25,15 @@ class Range:
     def __init__(self):
         self.min  = None  # Minimum value seen
         self.max  = None  # Maximum value seen
-    
     # Invoke this for every value
     def track(self, value):
         # YOUR CODE
-            
+        if value < self.min or self.min==None:
+            self.min = value
+        if value > self.max or self.max==None:
+            self.max = value
     def __repr__(self):
         return repr(self.min) + ".." + repr(self.max)
-
 
 # The Invariants class tracks all Ranges for all variables seen.
 class Invariants:
@@ -49,6 +50,19 @@ class Invariants:
             # If the event is "return", the return value
             # is kept in the 'arg' argument to this function.
             # Use it to keep track of variable "ret" (return)
+            if not self.vars.has_key(frame.f_code.co_name): # sqrt
+                self.vars[frame.f_code.co_name] = {}
+            if not self.vars[frame.f_code.co_name].has_key(event): # call
+                self.vars[frame.f_code.co_name][event] = {}
+            for var, val in frame.f_locals.iteritems():
+                if not self.vars[frame.f_code.co_name][event].has_key(var): # x
+                    self.vars[frame.f_code.co_name][event][var] = Range()
+                self.vars[frame.f_code.co_name][event][var].track(val)
+            if event == "return":
+                if not self.vars[frame.f_code.co_name][event].has_key("ret"): # ret
+                    self.vars[frame.f_code.co_name][event]["ret"] = Range()
+                self.vars[frame.f_code.co_name][event]["ret"].track(arg)
+            
     
     def __repr__(self):
         # Return the tracked invariants
