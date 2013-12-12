@@ -24,7 +24,14 @@ def test(i, complement): # FIXME adhockery to test locally
 
 import random
 
-def ddmin(s):
+def tokenize(s):
+    tokes = []
+    for i in range(len(s)):
+        tokes.append(s[i])
+    return tokes
+
+def ddmin(untokenized):
+    s = tokenize(untokenized)
     counter = 0
     n = 2     # Initial granularity
     while len(s) >= 2:
@@ -36,7 +43,7 @@ def ddmin(s):
             counter += 1
             complement = s[:start] + s[start + subset_length:]
 
-            if test(i, complement) == "FAIL":
+            if test(i, "".join(complement)) == "FAIL":
                 s = complement
                 n = max(n - 1, 2)
                 some_complement_is_failing = True
@@ -48,7 +55,7 @@ def ddmin(s):
             if n == len(s):
                 break
             n = min(n * 2, len(s))
-    return s, counter
+    return "".join(s), counter
 
 
 answer=[None] * len(test_cases)
