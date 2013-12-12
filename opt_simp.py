@@ -14,7 +14,14 @@ test_cases = ['<vbox><listbox rows="2"><listitem label="listitem"/><listitem><ht
               '<form name="changeform" id="changeform" method="post" action="process_bug.cgi"><input type="hidden" name="delta_ts" value="2007-04-26 07:34:56"><input type="hidden" name="longdesclength" value="8"><input type="hidden" name="id" value="356999"><input type="hidden" name="token" value="1346633823-befc508ae6f90d359299be7ea39c463a"><div class="bz_alias_short_desc_container edit_form"><span class="last_comment_link"><a href="#c7" accesskey="l"><b>L</b>ast Comment</a></span><a href="show_bug.cgi?id=356999"><b>Bug&nbsp;356999</b></a> -<span id="summary_alias_container" class="bz_default_hidden"> <span id="short_desc_nonedit_display">&lt;html:input type=&quot;text&quot;&gt; inside scaled &lt;svg:foreignObject&gt; is horribly broken</span></span><div id="summary_alias_input"><table id="summary"><td colspan="2">          </td>        </tr><tr><td><label accesskey="s" for="short_desc"><u>S</u>ummary</label>:</td><td>&lt;html:input type=&quot;text&quot;&gt; inside scaled &lt;svg:foreignObject&gt; is horribly broken          </td>        </tr>      </table>    </div>  </div><input type="range" value="2" min="-5" max="5" step="1"></form>',
               '<div id="content">     <div class="indent-main">        <div class="indent">            <div class="container">                <div class="col-1">                    <div class="indent-col1">                        <h1 class="title">Welcome</h1>                        <p class="p1">Welcome Pet Lovers! &nbsp;Here you\'ll find just what you\'re looking for - with a big extra bonus: FUN! &nbsp;Sure, you could buy that catnip or dog toy anywhere else, but here at the Go-To Guide, we are SERIOUSLY committed to making you SMILE. &nbsp;Maybe even LAUGH!</p>                      <div class="box">                            <div class="border-top">                                <div class="border-bottom">                                    <div class="corner-top-right">                                        <div class="corner-top-left">                                            <div class="corner-bottom-left">                                                <div class="corner-bottom-right">                                                   <div class="indent-box">                                                        <div class="container">                                                          <div class="col-3">                                                                <img alt="" src="images/1page_img1.jpg" class="img-indent" /><br />                                                              <a href="#" class="link2"><strong>News</strong></a> <br />                                                                <ul class="boxlist">                                                                   <li>Link to News Story</li>                                                                   <li>Link to News Story 2</li>                                                                   <li>Link to News Story 3</li>                                                                </ul>                                                               </div>                                                            <div class="col-3">                                                                <img alt="" src="images/1page_img2.jpg" class="img-indent" /><br />                                                              <a href="#" class="link2"><strong>Information</strong> <br />                                                               &nbsp; &nbsp; &nbsp; &nbsp;mau <span>rillus</span> </a>                                                            </div>                                                            <div class="col-3">                                                                <img alt="" src="images/1page_img3.jpg" class="img-indent" /><br />                                                              <a href="#" class="link2"><strong>Products</strong> <br />                                                               &nbsp; &nbsp; &nbsp; &nbsp;cumsoci <span>inatot</span> </a>                                                            </div>                                                            <div class="col-4">                                                                <img alt="" src="images/1page_img4.jpg" class="img-indent" /><br />                                                              <a href="#" class="link2"><strong>Services</strong> <br />                                                              &nbsp; &nbsp; &nbsp; &nbsp;us etgnis <span>sriea</span>  </a>                                                          </div>                                                        </div>                                                    </div>                                                </div>                                            </div>                                        </div>                                    </div>                                </div>                            </div>                        </div>                        <img alt="" src="images/1page_title2.gif" class="title1" /><br />                        <p><strong>04/18/2009 - 14:53</strong></p>']
 
-from ps3_mystery import mystery_test as test
+# from ps3_mystery import mystery_test as test
+
+def test(i, complement): # FIXME adhockery to test locally
+    if complement.find("bo") > -1:
+        return "FAIL"
+    else:
+        return "PASS"
+
 import random
 
 def ddmin(s):
@@ -43,5 +50,15 @@ def ddmin(s):
             n = min(n * 2, len(s))
     return s, counter
 
-answer = ['' for _ in test_cases]
-counters = ['' for _ in test_cases]
+
+answer=[None] * len(test_cases)
+counters=[None] * len(test_cases)
+
+for i in range(len(test_cases)):
+    answer[i], counters[i] = ddmin(test_cases[i])
+
+# answer = ['' for _ in test_cases]
+# counters = ['' for _ in test_cases]
+
+print answer
+print counters
