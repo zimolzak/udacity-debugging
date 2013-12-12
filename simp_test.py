@@ -47,4 +47,16 @@ def ddmin(s):
             n = min(n * 2, len(s))
     return s
 
-answer = ['' for _ in test_cases] # YOUR ANSWER SHOULD GO IN THIS VARIABLE
+answer=[None] * len(test_cases)
+
+for i in range(len(test_cases)):
+    answer[i] = ddmin(test_cases[i])
+
+#answer = ['' for _ in test_cases] # YOUR ANSWER SHOULD GO IN THIS VARIABLE
+#print answer
+
+# style="margin:0px;"
+# <body onload="
+# <div style="display:none;">
+# action="process_bug.cgi"
+# <div class="indent-box"> <div>
