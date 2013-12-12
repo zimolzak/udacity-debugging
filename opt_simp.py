@@ -26,8 +26,17 @@ import random
 
 def tokenize(s):
     tokes = []
+    start_tag = None
     for i in range(len(s)):
-        tokes.append(s[i])
+        if s[i] == '<':
+            assert start_tag == None
+            start_tag = i
+        elif s[i] == '>':
+            assert start_tag != None
+            tokes.append(s[start_tag:i+1])
+            start_tag = None
+        elif start_tag == None:
+            tokes.append(s[i])
     return tokes
 
 def ddmin(untokenized):
