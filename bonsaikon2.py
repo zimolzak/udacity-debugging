@@ -31,14 +31,23 @@ class Range:
         self.max  = None  # Maximum value seen
         self.type = None  # Type of variable
         self.set = set()  # Set of values taken
-    
     # Invoke this for every value
     def track(self, value):
         # YOUR CODE
-            
+        if value < self.min or self.min==None:
+            self.min = value
+        if value > self.max or self.max==None:
+            self.max = value
+        # more code for more range details
+        self.set.add(value)
+        if self.type == None:
+            self.type = "type(" + str(value) + ")"
+        elif self.type != "???":
+            exec "type_obj = " + self.type
+            if type_obj != type(value):
+                self.type = "???"
     def __repr__(self):
-        repr(self.type) + " " + repr(self.min) + ".." + repr(self.max)+ " " + repr(self.set)
-
+        return repr(self.type) + " " + repr(self.min) + ".." + repr(self.max)+ " " + repr(self.set)
 
 # The Invariants class tracks all Ranges for all variables seen.
 class Invariants:
@@ -52,6 +61,18 @@ class Invariants:
         if event == "call" or event == "return":
             # YOUR CODE HERE. 
             # MAKE SURE TO TRACK ALL VARIABLES AND THEIR VALUES
+            if not self.vars.has_key(frame.f_code.co_name): # sqrt
+                self.vars[frame.f_code.co_name] = {}
+            if not self.vars[frame.f_code.co_name].has_key(event): # call
+                self.vars[frame.f_code.co_name][event] = {}
+            for var, val in frame.f_locals.iteritems():
+                if not self.vars[frame.f_code.co_name][event].has_key(var): # x
+                    self.vars[frame.f_code.co_name][event][var] = Range()
+                self.vars[frame.f_code.co_name][event][var].track(val)
+            if event == "return":
+                if not self.vars[frame.f_code.co_name][event].has_key("ret"): # ret
+                    self.vars[frame.f_code.co_name][event]["ret"] = Range()
+                self.vars[frame.f_code.co_name][event]["ret"].track(arg)
     
     def __repr__(self):
         # Return the tracked invariants
@@ -61,7 +82,7 @@ class Invariants:
                 s += event + " " + function + ":\n"
         
                 for var, range in vars.iteritems():
-                    s += "    assert isinstance(" + var + # YOUR CODE
+                    s += "    assert isinstance(" + var + ", " + range.type + ")\n" # YOUR CODE (for type)
                     s += "    assert "
                     if range.min == range.max:
                         s += var + " == " + repr(range.min)
@@ -70,7 +91,13 @@ class Invariants:
                     s += "\n"
                     # ADD HERE RELATIONS BETWEEN VARIABLES
                     # RELATIONS SHOULD BE ONE OF: ==, <=, >=
-                    s += "    assert " + var + " >= " + var2 + "\n"               
+                    for var2, range2 in vars.iteritems():
+                        if var == var2:
+                            continue
+                        if range.max >= range2.min:
+                            s += "    assert " + var + " >= " + var2 + "\n"
+                        if range.max <= range2.min:
+                            s += "    assert " + var + " <= " + var2 + "\n"
         return s
 
 invariants = Invariants()
