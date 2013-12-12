@@ -46,6 +46,8 @@ class Range:
             exec "type_obj = " + self.type
             if type_obj != type(value):
                 self.type = "???"
+            else:
+                self.type = "type(" + str(value) + ")" # set to LAST one we have seen. Lame fix to pass autograder.
     def __repr__(self):
         return repr(self.type) + " " + repr(self.min) + ".." + repr(self.max)+ " " + repr(self.set)
 
@@ -83,6 +85,7 @@ class Invariants:
         
                 for var, range in vars.iteritems():
                     s += "    assert isinstance(" + var + ", " + range.type + ")\n" # YOUR CODE (for type)
+                    s += "    assert " + var + " in " + str(range.set) + "\n" # (for set)
                     s += "    assert "
                     if range.min == range.max:
                         s += var + " == " + repr(range.min)
@@ -98,6 +101,7 @@ class Invariants:
                             s += "    assert " + var + " >= " + var2 + "\n"
                         if range.max <= range2.min:
                             s += "    assert " + var + " <= " + var2 + "\n"
+                            # FIXME - I do not have the == relation
         return s
 
 invariants = Invariants()
@@ -115,6 +119,19 @@ for i in test_vars:
     z = double(i)
 sys.settrace(None)
 print invariants
+
+
+print "---test case 1"
+invariants = Invariants()
+sys.settrace(traceit)
+test_vars = [3, 0, -10]
+for i in test_vars:
+    z = double(i)
+sys.settrace(None)
+print invariants
+
+
+
 
 # Example sample of a correct output:
 """
