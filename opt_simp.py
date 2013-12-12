@@ -33,6 +33,12 @@ def tokenize(s):
     assert "".join(tokes) == s
     return tokes
 
+def dumb_tokenize(s):
+    tokes=[]
+    for i in range(len(s)):
+        tokes.append(s[i])
+    return tokes
+
 # dumb tokenizer [16, 18, 18, 3357, 27]
 # good tokenizer [ 3,  9, 10,  850, 21]
 
