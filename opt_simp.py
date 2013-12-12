@@ -33,6 +33,33 @@ def tokenize(s):
     assert "".join(tokes) == s
     return tokes
 
+from re import *
+
+def isletter(s):
+    return search("[A-Za-z]", s) != None
+
+def word_tokenize(s):
+    tokes = []
+    start_word = None
+    for i in range(len(s)):
+        if start_word==None and isletter(s[i]):
+            start_word = i # state
+            pass           # tokes
+        elif start_word==None and not isletter(s[i]):
+            pass               # state
+            tokes.append(s[i]) # tokes
+        elif start_word!=None and isletter(s[i]):
+            pass # state
+            pass # tokes
+        elif start_word!=None and not isletter(s[i]):
+            tokes.append(s[start_word:i]) # tokes
+            tokes.append(s[i])
+            start_word = None             # state
+    if start_word!=None:
+        tokes.append(s[start_word:]) # if str ends without symbol
+    assert "".join(tokes) == s
+    return tokes
+
 def dumb_tokenize(s):
     tokes=[]
     for i in range(len(s)):
@@ -42,8 +69,15 @@ def dumb_tokenize(s):
 # dumb tokenizer [16, 18, 18, 3357, 27]
 # good tokenizer [ 3,  9, 10,  850, 21]
 
+# REAL MYSTERY_TEST FUNC
+#     style="margin:0px;"
+#     <body onload="
+#     <div style="display:none;">
+#     action="process_bug.cgi"
+#     <div class="indent-box"> <div>
+
 def ddmin(untokenized):
-    s = tokenize(untokenized)
+    s = word_tokenize(untokenized)
     counter = 0
     n = 2     # Initial granularity
     while len(s) >= 2:
@@ -78,3 +112,4 @@ for i in range(len(test_cases)):
 
 print answer
 print counters
+print sum(counters)
